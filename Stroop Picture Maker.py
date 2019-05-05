@@ -6,39 +6,40 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 
-def draw_image(new_img, text, show_image=False):
+def drawImage(newImg, text, showImage=False):
     text = str(text)
-    draw = ImageDraw.Draw(new_img)
-    img_size = new_img.size
+    draw = ImageDraw.Draw(newImg)
+    imgSize = newImg.size
 
-    font_size = 115
-    fnt = ImageFont.truetype('song.ttf', font_size)
-    fnt_size = fnt.getsize(text)
-    while fnt_size[0] > img_size[0] or fnt_size[0] > img_size[0]:
-        font_size -= 5
-        fnt = ImageFont.truetype('song.ttf', font_size)
-        fnt_size = fnt.getsize(text)
+    #设置字体格式
+    fontSize = 115
+    fnt = ImageFont.truetype('song.ttf', fontSize)
+    fntSize = fnt.getsize(text)
+    while fntSize[0] > imgSize[0] or fntSize[0] > imgSize[0]:
+        fontSize -= 5
+        fnt = ImageFont.truetype('song.ttf', fontSize)
+        fntSize = fnt.getsize(text)
 
-    x = (img_size[0] - fnt_size[0]) / 2
-    y = (img_size[1] - fnt_size[1]) / 2
+    x = (imgSize[0] - fntSize[0]) / 2
+    y = (imgSize[1] - fntSize[1]) / 2
 
     # fill内部数值为字体颜色（RBG格式）可以更改
     draw.text((x, y), text, font=fnt, fill=(255, 255, 0))
 
-
-    if show_image:
-        new_img.show()
+#显示图片的判断
+    if showImage:
+        newImg.show()
     del draw
 
 
-def new_image(width, height, text='default', color=(0, 0, 0, 0), show_image=False):
-    new_img = Image.new('RGBA', (int(230), int(118)), color)
-    draw_image(new_img, text, show_image)
-    new_img.save(r'%s%s%s.png' % (type, num, textColor))
-    del new_img
+def newImage(width, height, text='default', color=(0, 0, 0, 0), show_image=False):
+    newImg = Image.new('RGBA', (int(230), int(118)), color)
+    drawImage(newImg, text, show_image)
+    newImg.save(r'%s%s%s.png' % (type, num, textColor))
+    del newImg
 
 
-def new_image_with_file(fn):
+def newImageWithFile(fn):
     with open(fn, encoding='utf-8') as f:
         for l in f:
             l = l.strip()
@@ -47,7 +48,7 @@ def new_image_with_file(fn):
                 if '#' == l[0] or len(ls) < 2:
                     continue
 
-                new_image(*ls)
+                newImage(*ls)
 
 
 #命名格式，现有格式为 组别首字母+数字序号+颜色编码（e.g p1r，意思为第一张红色的痛觉相关词汇，可以根据需要修改
@@ -66,6 +67,6 @@ for text in textList:
         num+=1
 
         #show_image=True，则运行时立即显示生成的图片, 可改为False
-        new_image(230,118,text,show_image=True)
+        newImage(230,118,text,show_image=True)
 
 
